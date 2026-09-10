@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql" // ganti ke "postgresql" atau "sqlite" kalau perlu
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  notes Note[]
+
+  @@map("users")
+}
+
+model Note {
+  id        Int      @id @default(autoincrement())
+  userId    Int      @map("user_id")
+  title     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  blocks Block[]
+
+  @@map("notes")
+}
+
+enum BlockType {
+  text
+  checklist
+  image
+  code
+}
+
+model Block {
+  id         Int       @id @default(autoincrement())
+  noteId     Int       @map("note_id")
+  parentId   Int?      @map("parent_id")
+  type       BlockType
+  content    String    @db.Text
+  isChecked  Boolean   @default(false) @map("is_checked") // dipakai untuk checklist block
+  orderIndex Int       @map("order_index")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  note     Note    @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  parent   Block?  @relation("BlockChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children Block[] @relation("BlockChildren")
+
+  @@map("blocks")
+}
