@@ -25,3 +25,11 @@ body {
   background: var(--color-bg);
   color: var(--color-ink);
 }
+
+.ProseMirror {
+  outline: none;
+  min-height: 24px;
+}
+.ProseMirror p {
+  margin: 0 0 8px 0;
+}
