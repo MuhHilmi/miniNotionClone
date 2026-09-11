@@ -28,6 +28,7 @@ export default function RegisterPage() {
                 email: data.email,
                 password: data.password
             });
+            navigate("/login")
         } catch (err) {
             setServerError(
                 err.response?.data?.message || "Gagal mendaftar, silahkan coba lagi"
@@ -49,7 +50,7 @@ export default function RegisterPage() {
                     {errors.password && <p style={errorStyle}>{errors.password.message}</p>}
                 </div>
                 <div>
-                    <label style={labelStyle}>Email</label>
+                    <label style={labelStyle}>Konfirmasi Password</label>
                     <input type="password" style={inputStyle} {...register("confirmPassword")} />
                     {errors.confirmPassword && <p style={errorStyle}>{errors.confirmPassword.message}</p>}
                 </div>

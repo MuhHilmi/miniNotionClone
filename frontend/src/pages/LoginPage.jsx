@@ -8,7 +8,7 @@ import AuthLayout from "../components/AuthLayout";
 
 export default function LoginPage() {
     const navigate = useNavigate();
-    const [serverError, serServerError] = useState("");
+    const [serverError, setServerError] = useState("");
 
     const {
         register,
@@ -27,7 +27,7 @@ export default function LoginPage() {
             await loginUser(data);
             navigate("/notes");
         } catch (err) {
-            serServerError(
+            setServerError(
                 err.response?.data?.message || "Email atau Password Salah"
             );
         }
