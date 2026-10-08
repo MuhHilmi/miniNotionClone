@@ -7,19 +7,21 @@ function generateToken(payload) {
 }
 
 function setAuthCookie(res, token) {
+    const isProduction = process.env.NODE_ENV === "production";
     res.cookie(process.env.COOKIE_NAME || "token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 }
 
 function clearAuthCookie(res) {
+    const isProduction = process.env.NODE_ENV === "production";
     res.clearCookie(process.env.COOKIE_NAME || "token", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "lax",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
     });
 }
 
