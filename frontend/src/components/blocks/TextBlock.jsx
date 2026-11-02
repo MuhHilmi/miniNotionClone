@@ -18,9 +18,11 @@ export default function TextBlock({ content, onChange }) {
     }, [editor]);
 
     return (
-        <EditorContent
-            editor={editor}
-            style={{ width: "100%", fontSize: 15, lineHeight: 1.6 }}
-        />
+        <div style={{ width: "100%", padding: "0 12px" }}>
+            <EditorContent
+                editor={editor}
+                style={{ width: "100%", fontSize: 15, lineHeight: 1.6 }}
+            />
+        </div>
     );
 }

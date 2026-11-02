@@ -182,3 +182,59 @@
     border-right-color: var(--border);
   }
 }
+
+/* Mobile sidebar drawer & overlay */
+@media (max-width: 768px) {
+  /* Overlay backdrop when drawer is open */
+  .sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.35);
+    z-index: 45;
+    backdrop-filter: blur(2px);
+  }
+
+  /* Hamburger button touch target */
+  .mobile-hamburger {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Responsive breakpoints for mobile */
+@media (max-width: 768px) {
+  .counter {
+    font-size: 0.95rem;
+    padding: 0.3rem 0.6rem;
+    margin-bottom: 1.2rem;
+  }
+
+  #center {
+    gap: 1.2rem;
+    padding: 1rem 0.5rem;
+  }
+
+  #next-steps > div {
+    padding: 1.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .counter {
+    font-size: 0.9rem;
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  #center {
+    gap: 1rem;
+    padding: 1rem 0.4rem;
+  }
+
+  #next-steps > div {
+    padding: 1rem 0.6rem;
+  }
+}

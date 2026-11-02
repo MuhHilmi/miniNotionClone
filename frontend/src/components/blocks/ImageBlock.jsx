@@ -36,7 +36,7 @@ export default function ImageBlock({ content, onChange }) {
                 <img
                     src={content}
                     alt=""
-                    style={{ maxWidth: "100%", borderRadius: 6, marginTop: 4 }}
+                    style={{ maxWidth: "100%", height: "auto", borderRadius: 6, marginTop: 4 }}
                     onError={(e) => (e.target.style.display = "none")}
                 />
             )}

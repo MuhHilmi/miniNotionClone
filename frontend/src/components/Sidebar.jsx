@@ -1,9 +1,17 @@
 import { useState } from "react";
-import { LogOut, Plus, Search } from "lucide-react";
+import { LogOut, Plus, Search, Menu, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../api/auth";
 
-export default function Sidebar({ notes, activeNoteId, onSelectNote, onNewNote }) {
+export default function Sidebar({
+    notes,
+    activeNoteId,
+    onSelectNote,
+    onNewNote,
+    isMobile = false,
+    isOpen = false,
+    onToggle,
+}) {
     const [query, setQuery] = useState("");
     const navigate = useNavigate();
 
@@ -17,22 +25,66 @@ export default function Sidebar({ notes, activeNoteId, onSelectNote, onNewNote }
         } finally {
             navigate("/login");
         }
+    };
+
+    // On mobile, only render when drawer is open
+    if (isMobile && !isOpen) {
+        return null;
     }
 
     return (
         <div
             style={{
-                width: 240,
+                width: isMobile ? 280 : 240,
                 flexShrink: 0,
                 background: "var(--color-sidebar)",
-                borderRight: "1px solid var(--color-border)",
+                ...(isMobile
+                    ? {
+                          position: "fixed",
+                          top: 0,
+                          left: 0,
+                          height: "100vh",
+                          zIndex: 50,
+                          boxShadow: "2px 0 12px rgba(0,0,0,0.15)",
+                          transform: isOpen ? "translateX(0)" : "translateX(-100%)",
+                          transition: "transform 0.3s ease",
+                      }
+                    : {
+                          borderRight: "1px solid var(--color-border)",
+                      }),
                 padding: "20px 16px",
                 display: "flex",
                 justifyContent: "space-between",
                 flexDirection: "column",
                 height: "100vh",
+                overflowY: "auto",
             }}
         >
+            {/* Close button (X) shown only on mobile drawer */}
+            {isMobile && (
+                <button
+                    onClick={onToggle}
+                    style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        background: "transparent",
+                        border: "none",
+                        color: "var(--color-ink)",
+                        fontSize: 20,
+                        cursor: "pointer",
+                        marginBottom: 20,
+                        padding: 10,
+                        width: 44,
+                        height: 44,
+                        minWidth: 44,
+                        minHeight: 44,
+                    }}
+                >
+                    <X size={20} />
+                </button>
+            )}
+
             <div>
                 <button
                     onClick={onNewNote}
@@ -44,14 +96,16 @@ export default function Sidebar({ notes, activeNoteId, onSelectNote, onNewNote }
                         color: "var(--color-bg)",
                         border: "none",
                         borderRadius: 6,
-                        padding: "9px 12px",
-                        fontSize: 13,
+                        padding: "12px 16px",
+                        fontSize: 14,
                         fontWeight: 500,
                         cursor: "pointer",
                         marginBottom: 16,
+                        width: "100%",
+                        minHeight: 44,
                     }}
                 >
-                    <Plus size={15} /> Note baru
+                    <Plus size={18} /> Note baru
                 </button>
 
                 <div
@@ -77,6 +131,7 @@ export default function Sidebar({ notes, activeNoteId, onSelectNote, onNewNote }
                             background: "transparent",
                             fontSize: 13,
                             width: "100%",
+                            minHeight: 44,
                         }}
                     />
                 </div>
@@ -91,11 +146,13 @@ export default function Sidebar({ notes, activeNoteId, onSelectNote, onNewNote }
                                 background: activeNoteId === n.id ? "var(--color-bg)" : "transparent",
                                 border: "none",
                                 borderRadius: 6,
-                                padding: "8px 10px",
-                                fontSize: 13.5,
+                                padding: "12px 14px",
+                                fontSize: 14,
                                 fontWeight: activeNoteId === n.id ? 500 : 400,
                                 color: activeNoteId === n.id ? "var(--color-ink)" : "var(--color-ink-muted)",
                                 cursor: "pointer",
+                                width: "100%",
+                                minHeight: 44,
                             }}
                         >
                             {n.title}
@@ -122,11 +179,12 @@ export default function Sidebar({ notes, activeNoteId, onSelectNote, onNewNote }
                         color: "var(--color-ink-muted)",
                         fontSize: 13,
                         cursor: "pointer",
-                        padding: "6px 4px",
+                        padding: "10px 4px",
                         width: "100%",
+                        minHeight: 44,
                     }}
                 >
-                    <LogOut size={15} /> Logout
+                    <LogOut size={17} /> Logout
                 </button>
             </div>
         </div>
